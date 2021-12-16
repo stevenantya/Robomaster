@@ -1,0 +1,18 @@
+!SESSION 2021-12-16 19:16:11.842 -----------------------------------------------
+eclipse.buildId=Version 1.8.0
+java.version=11.0.11
+java.vendor=AdoptOpenJDK
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_SG
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -data C:\NUS Robomaster\Robomaster
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2021-12-16 19:16:16.126
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2021-12-16 19:16:16.173
+!MESSAGE Log4j initialized with config file C:\NUS Robomaster\Robomaster\.metadata\.log4j.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2021-12-16 19:16:18.283
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY org.eclipse.cdt.core 1 0 2021-12-16 19:17:12.843
+!MESSAGE Indexed 'Code' (23 sources, 113 headers) in 3.5 sec: 9,917 declarations; 55,663 references; 2 unresolved inclusions; 49 syntax errors; 708 unresolved names (1.1%)
