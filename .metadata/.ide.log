@@ -1505,3 +1505,44 @@
 2021-12-20 15:01:50,460 [INFO] ProjectBuilder:2461 - Time for Copy CMSIS : 0mS.
 2021-12-20 15:01:50,469 [INFO] ProjectBuilder:2461 - Time for Copy CMSIS : 0mS.
 2021-12-20 15:09:11,740 [INFO] Gpio:254 - dependency for GPIO [RCC, SYS, TIM1, TIM17, USART2]
+2021-12-20 16:18:21,256 [INFO] NvicIntPanel:96 - NVIC parent = com.st.microxplorer.plugins.ip.nvic.MultiNvicIntPanel[,0,0,0x0,invalid,layout=javax.swing.BoxLayout,alignmentX=0.0,alignmentY=0.0,border=,flags=9,maximumSize=,minimumSize=,preferredSize=]
+2021-12-20 16:19:03,033 [INFO] UtilMem:74 - End SaveConfig() Used Memory: 785819464 Bytes (1003487232)
+2021-12-20 16:19:31,976 [INFO] UtilMem:74 - End SaveConfig() Used Memory: 656175680 Bytes (1003487232)
+2021-12-20 16:19:33,521 [INFO] UtilMem:74 - End SaveConfig() Used Memory: 689203776 Bytes (1003487232)
+2021-12-20 16:19:35,217 [INFO] UtilMem:74 - End SaveConfig() Used Memory: 781478464 Bytes (1003487232)
+2021-12-20 16:19:35,487 [INFO] BlockDiagram:2740 - set Specific Code input for plugin: NVIC
+2021-12-20 16:19:35,487 [INFO] BlockDiagram:2740 - set Specific Code input for plugin: USART
+2021-12-20 16:19:35,487 [INFO] BlockDiagram:2740 - set Specific Code input for plugin: TIM6_7F3
+2021-12-20 16:19:35,487 [INFO] BlockDiagram:2740 - set Specific Code input for plugin: TIM1_8F3
+2021-12-20 16:19:35,487 [INFO] BlockDiagram:2740 - set Specific Code input for plugin: TIM1_8F3
+2021-12-20 16:19:35,487 [INFO] BlockDiagram:2740 - set Specific Code input for plugin: TIM1_8F3
+2021-12-20 16:19:35,487 [INFO] BlockDiagram:2740 - set Specific Code input for plugin: SYS
+2021-12-20 16:19:35,488 [INFO] BlockDiagram:2740 - set Specific Code input for plugin: GPIO
+2021-12-20 16:19:35,488 [INFO] BlockDiagram:2740 - set Specific Code input for plugin: RCC
+2021-12-20 16:19:35,488 [INFO] CodeGenerator:663 - code generatio: config db path: C:\ST\STM32CubeIDE_1.8.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_6.4.0.202111222105\\db\
+2021-12-20 16:19:35,826 [INFO] CodeEngine:239 - oldGeneratedFile, C:\NUS Robomaster\Robomaster\Robomaster_New_Code\MXTmpFiles\license.tmp_save
+2021-12-20 16:19:35,879 [INFO] CodeEngine:257 - Generated code: C:\NUS Robomaster\Robomaster\Robomaster_New_Code\MXTmpFiles\license.tmp
+2021-12-20 16:19:35,941 [INFO] CodeEngine:239 - oldGeneratedFile, C:\NUS Robomaster\Robomaster\Robomaster_New_Code\MXTmpFiles\gpio.tmp_save
+2021-12-20 16:19:35,984 [INFO] CodeEngine:257 - Generated code: C:\NUS Robomaster\Robomaster\Robomaster_New_Code\MXTmpFiles\gpio.tmp
+2021-12-20 16:19:36,545 [INFO] CodeEngine:239 - oldGeneratedFile, C:\NUS Robomaster\Robomaster\Robomaster_New_Code\Core\Src\stm32f3xx_it.c_save
+2021-12-20 16:19:36,625 [INFO] CodeEngine:257 - Generated code: C:\NUS Robomaster\Robomaster\Robomaster_New_Code\Core\Src\stm32f3xx_it.c
+2021-12-20 16:19:36,629 [INFO] CodeEngine:239 - oldGeneratedFile, C:\NUS Robomaster\Robomaster\Robomaster_New_Code\Core\Inc\stm32f3xx_it.h_save
+2021-12-20 16:19:36,693 [INFO] CodeEngine:257 - Generated code: C:\NUS Robomaster\Robomaster\Robomaster_New_Code\Core\Inc\stm32f3xx_it.h
+2021-12-20 16:19:36,707 [INFO] CodeEngine:239 - oldGeneratedFile, C:\NUS Robomaster\Robomaster\Robomaster_New_Code\Core\Src\stm32f3xx_hal_msp.c_save
+2021-12-20 16:19:36,808 [INFO] CodeEngine:257 - Generated code: C:\NUS Robomaster\Robomaster\Robomaster_New_Code\Core\Src\stm32f3xx_hal_msp.c
+2021-12-20 16:19:36,810 [INFO] CodeEngine:239 - oldGeneratedFile, C:\NUS Robomaster\Robomaster\Robomaster_New_Code\MXTmpFiles\system.tmp_save
+2021-12-20 16:19:36,854 [INFO] CodeEngine:257 - Generated code: C:\NUS Robomaster\Robomaster\Robomaster_New_Code\MXTmpFiles\system.tmp
+2021-12-20 16:19:36,865 [INFO] CodeEngine:239 - oldGeneratedFile, C:\NUS Robomaster\Robomaster\Robomaster_New_Code\Core\Inc\stm32f3xx_hal_conf.h_save
+2021-12-20 16:19:36,929 [INFO] CodeEngine:257 - Generated code: C:\NUS Robomaster\Robomaster\Robomaster_New_Code\Core\Inc\stm32f3xx_hal_conf.h
+2021-12-20 16:19:36,952 [WARN] IPConfigManager:3151 - IP not found : TIM
+2021-12-20 16:19:36,953 [WARN] CodeGenerator:3358 - IP not found : null
+2021-12-20 16:19:36,963 [INFO] CodeEngine:239 - oldGeneratedFile, C:\NUS Robomaster\Robomaster\Robomaster_New_Code\Core\Inc\main.h_save
+2021-12-20 16:19:37,022 [INFO] CodeEngine:257 - Generated code: C:\NUS Robomaster\Robomaster\Robomaster_New_Code\Core\Inc\main.h
+2021-12-20 16:19:37,031 [INFO] CodeEngine:239 - oldGeneratedFile, C:\NUS Robomaster\Robomaster\Robomaster_New_Code\Core\Src\main.c_save
+2021-12-20 16:19:37,162 [INFO] CodeEngine:257 - Generated code: C:\NUS Robomaster\Robomaster\Robomaster_New_Code\Core\Src\main.c
+2021-12-20 16:19:37,847 [INFO] ProjectBuilder:2589 - Time for Copy HAL[1] : 162mS.
+2021-12-20 16:19:37,849 [INFO] ProjectBuilder:3665 - Project Generator version: 3.15.2
+2021-12-20 16:19:38,264 [INFO] ConfigFileManager:1273 - The Die is : DIE439
+2021-12-20 16:19:39,427 [INFO] ProjectBuilder:3832 - Time for Generating toolchain IDE Files: 1578mS.
+2021-12-20 16:19:39,428 [INFO] ProjectBuilder:2461 - Time for Copy CMSIS : 0mS.
+2021-12-20 16:19:39,442 [INFO] ProjectBuilder:2461 - Time for Copy CMSIS : 0mS.
