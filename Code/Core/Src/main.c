@@ -99,9 +99,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, GPIO_PIN_SET);
-	  us1_start = HAL_TIM_GET_COUNTER(&htim2);
-	  HAL_Delay(1);
+	  int i =
 
 
 
