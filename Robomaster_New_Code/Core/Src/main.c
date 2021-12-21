@@ -21,6 +21,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "rc_input.h"
 
 /* USER CODE END Includes */
 
@@ -44,12 +45,28 @@ TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim6;
 TIM_HandleTypeDef htim17;
 
+UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart2;
+DMA_HandleTypeDef hdma_usart1_rx;
 
 /* USER CODE BEGIN PV */
 uint32_t us1_start;
 uint32_t us1_echo;
+uint32_t us2_start;
+uint32_t us2_echo;
+uint32_t us3_start;
+uint32_t us3_echo;
+uint32_t us4_start;
+uint32_t us4_echo;
+
+extern remote_cmd_t remote_cmd;
+
+uint16_t ButtonControl = 0;
+int16_t horizontal = 0;
+int16_t vertical = 0;
 double distance;
+
+int button;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -59,6 +76,8 @@ static void MX_USART2_UART_Init(void);
 static void MX_TIM1_Init(void);
 static void MX_TIM6_Init(void);
 static void MX_TIM17_Init(void);
+static void MX_DMA_Init(void);
+static void MX_USART1_UART_Init(void);
 static void MX_TIM2_Init(void);
 /* USER CODE BEGIN PFP */
 
@@ -66,18 +85,109 @@ static void MX_TIM2_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+void brushStart()
+{
+	htim17.Instance->CCR1 = 7000;
+}
+
+void brushStop()
+{
+	htim17.Instance->CCR1 = 0;
+}
+
+void Stop()
+{
+	htim1.Instance->CCR1 = 0;
+	htim1.Instance->CCR2 = 0;
+	htim1.Instance->CCR3 = 0;
+	htim1.Instance->CCR4 = 0;
+}
+
+void moveForward(int16_t speed)
+{
+	htim1.Instance->CCR1 = speed;
+	htim1.Instance->CCR2 = speed;
+	htim1.Instance->CCR3 = speed;
+	htim1.Instance->CCR4 = speed;
+}
+
+void moveBackward()
+{
+	//
+}
+
+void rotateLeft(uint16_t speed)
+{
+	htim1.Instance->CCR1 = 0;
+	htim1.Instance->CCR2 = 0;
+	htim1.Instance->CCR3 = (uint32_t)speed;
+	htim1.Instance->CCR4 = (uint32_t)speed;
+}
+
+void rotateRight(uint16_t speed)
+{
+	htim1.Instance->CCR1 = (uint32_t)speed;
+	htim1.Instance->CCR2 = (uint32_t)speed;
+	htim1.Instance->CCR3 = 0;
+	htim1.Instance->CCR4 = 0;
+}
+
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
 
 	if(GPIO_Pin == GPIO_PIN_9)
 	{
 		us1_echo = __HAL_TIM_GET_COUNTER(&htim2);
-		distance = (float)((us1_echo - us1_start)) * 330 * 2 / 100000;
-
-
+		distanceFront = (float)((us1_echo - us1_start)) * 330 * 2 / 100000;
 	}
 
+	if(GPIO_Pin == GPIO_PIN_12)
+	{
+		us2_echo = __HAL_TIM_GET_COUNTER(&htim2);
+		distanceRight = (float)((us2_echo - us2_start)) * 330 * 2 / 100000;
+	}
+
+	if(GPIO_Pin == GPIO_PIN_4)
+	{
+		us3_echo = __HAL_TIM_GET_COUNTER(&htim2);
+		distanceBack = (float)((us3_echo - us3_start)) * 330 * 2 / 100000;
+	}
+
+	if(GPIO_Pin == GPIO_PIN_8)
+	{
+		us1_echo = __HAL_TIM_GET_COUNTER(&htim2);
+		distanceLeft (float)((us4_echo - us4_start)) * 330 * 2 / 100000;
+	}
+
+	if(GPIO_Pin == GPIO_PIN_13 && ButtonControl == 0)
+	{
+//		brushStart();
+		moveForward(10000);
+		//rotateRight();
+		ButtonControl+=1;
+	}
+	else if(GPIO_Pin == GPIO_PIN_13 && ButtonControl!=0)
+	{
+//		brushStop();
+		Stop();
+		ButtonControl = 0;
+	}
 }
+int16_t vertical, horizontal;
+
+void move()
+{
+	horizontal = remote_cmd.left_x;
+	vertical = remote_cmd.left_y;
+	if (vertical > 10)
+		moveForward(vertical*17500/660);
+	if (horizontal < -10)
+		rotateLeft(horizontal*(-1)*10000/660);
+	if (horizontal > 10)
+		rotateRight(horizontal*10000/660);
+	if (horizontal == 0 && vertical <= 0) Stop();
+}
+
 
 /* USER CODE END 0 */
 
@@ -113,6 +223,8 @@ int main(void)
   MX_TIM1_Init();
   MX_TIM6_Init();
   MX_TIM17_Init();
+  MX_DMA_Init();
+  MX_USART1_UART_Init();
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
 
@@ -125,31 +237,53 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  rc_start(&huart1);
   HAL_TIM_Base_Start(&htim2);
 //  uint16_t timer_counter;
 //  uint16_t compare_register;
   while (1)
   {
+	  //Ultrasonic 1
 	  us1_start = __HAL_TIM_GET_COUNTER(&htim2);
 	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_SET);
 	  HAL_Delay(1);
 	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_RESET);
-	  HAL_Delay(500);
 
+
+	  //Ultrasonic 2
+	  us2_start = __HAL_TIM_GET_COUNTER(&htim2);
+	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_SET);
+	  HAL_Delay(1);
+	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_RESET);
+
+	  //Ultrasonic 3
+	  us3_start = __HAL_TIM_GET_COUNTER(&htim2);
+	  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, GPIO_PIN_SET);
+	  HAL_Delay(1);
+	  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, GPIO_PIN_RESET);
+
+	  //Ultrasonic 4
+	  us2_start = __HAL_TIM_GET_COUNTER(&htim2);
+	  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_SET);
+	  HAL_Delay(1);
+	  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_RESET);
+
+	  uint16_t time_for_one_rotation = ;
 
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  HAL_Delay(1000);
+	  // The count / CCR = duty cycle
 	  //The wheeeeeeelsz
-	  htim1.Instance->CCR1 = 10000;
-	  htim1.Instance->CCR2 = 10000;
-	  htim1.Instance->CCR3 = 10000;
-	  htim1.Instance->CCR4 = 10000;
-
+//	  moveForward();
+//	  moveBackward();
+//	  rotateLeft();
+//	  rotateRight();
 	  //The rotary blade that moves
-	  htim17.Instance->CCR1 = 10000;
-	  HAL_Delay(1000);
+	  //button = HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13);
+	  move();
+//	  htim17.Instance->CCR1 = 7000;
+	  HAL_Delay(100);
   }
   /* USER CODE END 3 */
 }
@@ -191,7 +325,9 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
-  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_TIM1|RCC_PERIPHCLK_TIM17;
+  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USART1|RCC_PERIPHCLK_TIM1
+                              |RCC_PERIPHCLK_TIM17;
+  PeriphClkInit.Usart1ClockSelection = RCC_USART1CLKSOURCE_PCLK1;
   PeriphClkInit.Tim1ClockSelection = RCC_TIM1CLK_HCLK;
   PeriphClkInit.Tim17ClockSelection = RCC_TIM17CLK_HCLK;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
@@ -429,6 +565,41 @@ static void MX_TIM17_Init(void)
 }
 
 /**
+  * @brief USART1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART1_UART_Init(void)
+{
+
+  /* USER CODE BEGIN USART1_Init 0 */
+
+  /* USER CODE END USART1_Init 0 */
+
+  /* USER CODE BEGIN USART1_Init 1 */
+
+  /* USER CODE END USART1_Init 1 */
+  huart1.Instance = USART1;
+  huart1.Init.BaudRate = 100000;
+  huart1.Init.WordLength = UART_WORDLENGTH_9B;
+  huart1.Init.StopBits = UART_STOPBITS_1;
+  huart1.Init.Parity = UART_PARITY_EVEN;
+  huart1.Init.Mode = UART_MODE_TX_RX;
+  huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart1.Init.OverSampling = UART_OVERSAMPLING_16;
+  huart1.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
+  huart1.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
+  if (HAL_UART_Init(&huart1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USART1_Init 2 */
+
+  /* USER CODE END USART1_Init 2 */
+
+}
+
+/**
   * @brief USART2 Initialization Function
   * @param None
   * @retval None
@@ -460,6 +631,22 @@ static void MX_USART2_UART_Init(void)
   /* USER CODE BEGIN USART2_Init 2 */
 
   /* USER CODE END USART2_Init 2 */
+
+}
+
+/**
+  * Enable DMA controller clock
+  */
+static void MX_DMA_Init(void)
+{
+
+  /* DMA controller clock enable */
+  __HAL_RCC_DMA1_CLK_ENABLE();
+
+  /* DMA interrupt init */
+  /* DMA1_Channel5_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Channel5_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Channel5_IRQn);
 
 }
 

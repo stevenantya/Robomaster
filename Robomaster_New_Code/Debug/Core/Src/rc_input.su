@@ -1,0 +1,3 @@
+rc_input.c:19:6:dbus_rx_cplt	16	static
+rc_input.c:45:19:rc_start	96	static,ignoring_inline_asm
+rc_input.c:91:6:dbus_reset	4	static
